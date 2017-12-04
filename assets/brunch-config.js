@@ -64,7 +64,6 @@ exports.config = {
       jQuery: 'jquery',
       Popper: 'popper.js',
       bootstrap: 'bootstrap',
-      _: 'underscore',
     }
   }
 };
