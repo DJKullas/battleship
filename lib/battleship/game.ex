@@ -1,3 +1,5 @@
+#Code modified from Nat Tuck
+
 defmodule Battleship.Game do
   alias Battleship.GameAgent
 
@@ -10,6 +12,7 @@ defmodule Battleship.Game do
         player2Guesses: [],
         player1Name: "",
         player2Name: "",
+        messages: [],
       }
     end
 
@@ -18,11 +21,13 @@ defmodule Battleship.Game do
       p1g = game.player1Guesses
       p2s = game.player2Ships
       p2g = game.player2Guesses
+      ms = game.messages
 
       %{
         goods: Enum.filter(p1g, &(Enum.member?(p2s, &1))),
         bads: Enum.filter(p1g, &(!Enum.member?(p2s, &1))),
         myShips: p1s,
+        messages: ms,
       }
     end
 
@@ -37,6 +42,14 @@ defmodule Battleship.Game do
       end
     end
 
+    def message(game, text) do
+      ms = game.messages
+      |> MapSet.new()
+      |> MapSet.put(text)
+      |> MapSet.to_list
+      Map.put(game, :messages, ms)
+    end
+
     def guess(game, number) do
 
       gs = game.player1Guesses
@@ -48,7 +61,9 @@ defmodule Battleship.Game do
 
     def setShip(game, number, direction) do
 
-      if (Enum.count(game.player1Ships) < 5) do
+
+
+      if (Enum.count(game.player1Ships) < 5 && rem(number, 10) < 8) do
         ship = []
         cond do
           direction == 1 ->

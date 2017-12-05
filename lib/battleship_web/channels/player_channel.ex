@@ -1,3 +1,5 @@
+#Some of this code from Nat Tuck
+
 defmodule BattleshipWeb.PlayerChannel do
   use BattleshipWeb, :channel
   alias Battleship.GameAgent
@@ -22,6 +24,16 @@ defmodule BattleshipWeb.PlayerChannel do
       game = name
       |> Battleship.GameAgent.get()
       |> Game.guess(c)
+      GameAgent.put(name, game)
+      {:reply, {:ok, Game.client_view(game)}, socket}
+  end
+
+  def handle_in("message", %{"text" => t}, socket) do
+    send = t <> "\n"
+    name = socket.assigns[:name]
+      game = name
+      |> Battleship.GameAgent.get()
+      |> Game.message(send)
       GameAgent.put(name, game)
       {:reply, {:ok, Game.client_view(game)}, socket}
   end

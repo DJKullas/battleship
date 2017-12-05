@@ -1,3 +1,5 @@
+#Code modified from Nat Tuck
+
 defmodule BattleshipWeb.GameController do
   use BattleshipWeb, :controller
   alias Battleship.GameAgent

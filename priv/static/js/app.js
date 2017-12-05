@@ -37015,6 +37015,82 @@ exports.default = Board;
 
 });
 
+require.register("js/chat.js", function(exports, require, module) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Chat = function (_React$Component) {
+  _inherits(Chat, _React$Component);
+
+  function Chat(props) {
+    _classCallCheck(this, Chat);
+
+    var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this, props));
+
+    _this.state = {
+      value: ''
+    };
+
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.message = _this.message.bind(_this);
+    return _this;
+  }
+
+  _createClass(Chat, [{
+    key: 'message',
+    value: function message(_message) {
+      var _this2 = this;
+
+      this.props.channel.push("message", { text: this.state.value }).receive("ok", function (state) {
+        return _this2.setState(state);
+      });
+    }
+  }, {
+    key: 'handleChange',
+    value: function handleChange(event) {
+      this.setState({ value: event.target.value });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'form',
+        { onSubmit: this.message },
+        _react2.default.createElement(
+          'label',
+          null,
+          'Name:',
+          _react2.default.createElement('textarea', { value: this.state.value, onChange: this.handleChange })
+        ),
+        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+      );
+    }
+  }]);
+
+  return Chat;
+}(_react2.default.Component);
+
+exports.default = Chat;
+
+});
+
 require.register("js/game.js", function(exports, require, module) {
 'use strict';
 
@@ -37031,6 +37107,10 @@ var _react2 = _interopRequireDefault(_react);
 var _board = require('./board');
 
 var _board2 = _interopRequireDefault(_board);
+
+var _chat = require('./chat');
+
+var _chat2 = _interopRequireDefault(_chat);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37109,15 +37189,15 @@ var Game = function (_React$Component) {
           { className: 'row' },
           _react2.default.createElement(
             'div',
-            { className: 'col-sm-10' },
-            'You',
+            { className: 'col-sm-11' },
+            'Your guesses',
             _react2.default.createElement(_board2.default, { myBoard: false,
               bads: this.state.bads,
               goods: this.state.goods,
               onClick: function onClick(i) {
                 return _this4.handleClick(i);
               } }),
-            'Opponent',
+            'Opponents guesses',
             _react2.default.createElement(_board2.default, { myBoard: true,
               bads: this.state.bads,
               goods: this.state.goods,
@@ -37126,7 +37206,12 @@ var Game = function (_React$Component) {
                 return _this4.setShip(i);
               } })
           ),
-          _react2.default.createElement('div', { className: 'col-sm-2' })
+          _react2.default.createElement(
+            'div',
+            { className: 'col-sm-1' },
+            this.state.messages,
+            _react2.default.createElement(_chat2.default, { channel: this.props.channel })
+          )
         )
       );
     }

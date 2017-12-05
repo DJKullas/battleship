@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Board from './board';
+import Chat from './chat';
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -48,24 +49,27 @@ export default class Game extends React.Component {
 
   }
 
+
   render() {
     return (
       <div>
         <div className="row">
-        <div className="col-sm-10">
-        You
+        <div className="col-sm-11">
+        Your guesses
           <Board  myBoard={false}
             bads={this.state.bads}
             goods={this.state.goods}
             onClick={i => this.handleClick(i)} />
-            Opponent
+            Opponents guesses
             <Board myBoard={true}
               bads={this.state.bads}
               goods={this.state.goods}
               ships={this.state.myShips}
               onClick={i => this.setShip(i)} />
               </div>
-              <div className="col-sm-2">
+              <div className="col-sm-1">
+              {this.state.messages}
+              <Chat channel={this.props.channel} />
               </div>
         </div>
       </div>

@@ -1,3 +1,5 @@
+#Code taken from Nat Tuck
+
 defmodule Battleship.GameAgent do
   use GenServer
 

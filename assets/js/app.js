@@ -46,6 +46,7 @@ function start() {
       ready(channel, state0);
     })
     .receive("error", resp => { console.log("Unable to join", resp); });
+
 }
 
 $(start);
