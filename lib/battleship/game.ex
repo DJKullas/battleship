@@ -37,7 +37,7 @@ defmodule Battleship.Game do
       if game do
         game
       else
-        game = %{ name: gname}
+        game = %{ name: gname, player: user}
         GameAgent.put(gname, game)
       end
     end
@@ -60,10 +60,7 @@ defmodule Battleship.Game do
     end
 
     def setShip(game, number, direction) do
-
-
-
-      if (Enum.count(game.player1Ships) < 5 && rem(number, 10) < 8) do
+      if (Enum.count(game.player1Ships) < 5 && rem(number, 10) > 0 && rem(number, 10) < 9) do
         ship = []
         cond do
           direction == 1 ->

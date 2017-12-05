@@ -27,7 +27,7 @@ defmodule BattleshipWeb.Router do
 
 
   def set_user(conn, _params) do
-    user  = "jake"
+    user  = "test"
     token = Phoenix.Token.sign(BattleshipWeb.Endpoint, "username", user)
     conn
     |> assign(:user_name,  user)
